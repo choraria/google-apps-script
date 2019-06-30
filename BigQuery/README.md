@@ -1,8 +1,3 @@
-# App Script to BigQuery
-## Store data directly on BigQuery using Apps Script
+# Connecting Apps Script to BigQuery
 
-The [official reference guide](https://developers.google.com/apps-script/advanced/bigquery) doesn't talk of this but the following gave me a hard time to crack down
-
-```javascript
-'useLegacySql': false
-```
+- [webhook](webhook/): This script uses a doGet() function as a webhook to capture data and store it in your BigQuery table
