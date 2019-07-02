@@ -6,15 +6,15 @@ Refer to Google's guide on [creating a library](https://developers.google.com/ap
 
 ### List of functions
 
-- ExoAPI.metaData(number) // [Number metadata](https://developer.exotel.com/api/#metadata-phone)
-- ExoAPI.connectTwoNumbers(from, to, callerID) // [Outgoing call to connect two numbers](https://developer.exotel.com/api/#call-agent)
-- ExoAPI.connectNumberToFlow(from, callerID, flowID) // [Outgoing call to connect number to a call flow](https://developer.exotel.com/api/#call-customer)
-- ExoAPI.callDetails(callSid) // [Call details](https://developer.exotel.com/api/#call-details)
-- ExoAPI.sendSMS(callerID, to, body) // [Send SMS](https://developer.exotel.com/api/#send-sms)
-- ExoAPI.smsDetails(smsSid) // [SMS details](https://developer.exotel.com/api/#sms-details)
-- ExoAPI.authenticate(apiKey, apiToken, accSid, cluster)
+- ExoAPI.metaData(`number`) // [Number metadata](https://developer.exotel.com/api/#metadata-phone)
+- ExoAPI.connectTwoNumbers(`from`, `to`, `callerID`) // [Outgoing call to connect two numbers](https://developer.exotel.com/api/#call-agent)
+- ExoAPI.connectNumberToFlow(`from`, `callerID`, `flowID`) // [Outgoing call to connect number to a call flow](https://developer.exotel.com/api/#call-customer)
+- ExoAPI.callDetails(`callSid`) // [Call details](https://developer.exotel.com/api/#call-details)
+- ExoAPI.sendSMS(`callerID`, `to`, `body`) // [Send SMS](https://developer.exotel.com/api/#send-sms)
+- ExoAPI.smsDetails(`smsSid`) // [SMS details](https://developer.exotel.com/api/#sms-details)
+- ExoAPI.authenticate(`apiKey`, `apiToken`, `accSid`, `cluster`)
   - this is a default function that needs to be called before invoking any/all other functions - if this is skipped, an error message would request to invoke the same
-  - `cluster` parameter is optional
+  - *cluster* parameter is optional
 
 **Caveat**: Only the mandatory parameters have been considered for the purposes of this library
 
