@@ -1,4 +1,4 @@
-# Google Apps Script Library for Exotel APIs
+# Google Apps Script Library for [Exotel APIs](https://developer.exotel.com/api/)
 
 ### Host it yourself
 
@@ -24,4 +24,4 @@ You're also free to use the library hosted on my personal ID [here](https://scri
 
 ## Disclaimer
 
-This library is neither endoresed nor offically approved by Exotel.
+This library is neither endoresed nor offically approved by [Exotel](https://exotel.com/).
