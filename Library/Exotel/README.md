@@ -20,4 +20,4 @@ Refer to Google's guide on [creating a library](https://developers.google.com/ap
 
 ### Use mine
 
-You're also free to use the library hosted on my personal ID [here](https://script.google.com/d/1V9cn0CSU9GnSyCebBRZ5vS-jSn2z3U6s1KkaHe4Aml2x-CAsmTNU4bp4/edit) & *this* how to [use an existing library](https://developers.google.com/apps-script/guides/libraries#using_a_library)
+You're also free to use the library hosted on my personal ID [here](https://script.google.com/d/1V9cn0CSU9GnSyCebBRZ5vS-jSn2z3U6s1KkaHe4Aml2x-CAsmTNU4bp4/edit) & *this* is how to [use an existing library](https://developers.google.com/apps-script/guides/libraries#using_a_library)
