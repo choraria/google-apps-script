@@ -1,3 +1,3 @@
-# A collection of Google Apps Script libraries I've created over a period of time
+# A collection of Apps Script libraries I've created over time
 
 - [Exotel](http://exotel.com/): Cloud Communication APIs for Calls & SMS
