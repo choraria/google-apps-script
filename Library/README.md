@@ -1,3 +1,3 @@
 # A collection of Apps Script libraries I've created over time
 
-- [Exotel](http://exotel.com/): Cloud Communication APIs for Calls & SMS
+- [Exotel](Exotel/) ([official site](https://exotel.com/), [dev portal](https://developer.exotel.com/api/)): Cloud Communication APIs for Calls & SMS
