@@ -2,7 +2,7 @@
 /**/                                                              /**/
 /**/   // Make changes only to this segment                       /**/
 /**/                                                              /**/
-/**/   var ID = "Your-SpreadsheetID-goes-here";   /**/
+/**/   var ID = "Your-SpreadsheetID-goes-here";                   /**/
 /**/   var lock = 'admin'                                         /**/
 /**/                                                              /**/
 /**//* ======================================================== *//**/
