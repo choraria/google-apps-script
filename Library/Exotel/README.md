@@ -8,8 +8,10 @@ Refer to Google's guide on [creating a library](https://developers.google.com/ap
 
 - ExoAPI.metaData(`number`) // [Number metadata](https://developer.exotel.com/api/#metadata-phone)
 - ExoAPI.connectTwoNumbers(`from`, `to`, `callerID`) // [Outgoing call to connect two numbers](https://developer.exotel.com/api/#call-agent)
+  - [sample](sample/connect2Num.gs)
 - ExoAPI.connectNumberToFlow(`from`, `callerID`, `flowID`) // [Outgoing call to connect number to a call flow](https://developer.exotel.com/api/#call-customer)
 - ExoAPI.callDetails(`callSid`) // [Call details](https://developer.exotel.com/api/#call-details)
+  - [sample](sample/callDetails.gs)
 - ExoAPI.sendSMS(`callerID`, `to`, `body`) // [Send SMS](https://developer.exotel.com/api/#send-sms)
 - ExoAPI.smsDetails(`smsSid`) // [SMS details](https://developer.exotel.com/api/#sms-details)
 - ExoAPI.authenticate(`apiKey`, `apiToken`, `accSid`, `cluster`)
