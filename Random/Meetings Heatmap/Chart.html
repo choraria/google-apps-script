@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base target="_top">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load("current", {
+            packages: ["calendar"]
+        });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart(rowData) {
+            var dataTable = new google.visualization.DataTable();
+            dataTable.addColumn({
+                type: 'date',
+                id: 'Date'
+            });
+            dataTable.addColumn({
+                type: 'number',
+                id: 'Meetings'
+            });
+
+            var values = rowData;
+            if (values !== undefined) {
+                var eventData = [];
+                for (var i = 0; i < values.length; i++) {
+                    var rowData = [];
+                    for (var j = 0; j < 2; j++) {
+                        if (j == 0) {
+                            rowData.push(new Date(values[i][j]));
+                        } else {
+                            rowData.push(values[i][j]);
+                        }
+                    }
+                    eventData.push(rowData);
+                }
+
+                dataTable.addRows(eventData);
+
+                var chart = new google.visualization.Calendar(document.getElementById('calendar_basic'));
+                var options = {
+                    title: "Meetings Heatmap",
+                    height: 1500,
+                };
+                
+                chart.draw(dataTable, options);
+            }
+        }
+
+        google.script.run.withSuccessHandler(drawChart).getEvents();
+    </script>
+
+</head>
+
+<body>
+    <div id="calendar_basic" style="width: 1000px; height: 1500px; margin:0 auto;" align="center"></div>
+</body>
+
+</html>
