@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <base target="_top">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script>
+        $(document).ready(function() {
+            $('.tabs').tabs();
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var chipElems = document.querySelectorAll('.chips');
+            var autoCompElements = google.script.run.withSuccessHandler(function(value) {
+                var dynamicOptions = {};
+                value.forEach(function(data) {
+                    dynamicOptions[data[0]] = null
+                });
+
+                var chipOptions = {
+                    autocompleteOptions: {
+                        data: dynamicOptions,
+                        limit: Infinity,
+                        minLength: 1
+                    },
+                    placeholder: 'Options',
+                    secondaryPlaceholder: 'Add more'
+                }
+                M.Chips.init(chipElems, chipOptions);
+            }).getOptions();
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            var optionsDropDown = google.script.run.withSuccessHandler(function(value) {
+
+                var optionsJSON = value;
+                $.each(optionsJSON, function(index, data) {
+                    $('#optionsSelect').append($('<option/>', {
+                        value: data,
+                        text: data
+                    }));
+                });
+
+                var elems = document.querySelectorAll('select');
+                var instances = M.FormSelect.init(elems);
+            }).getOptions();
+        });
+    </script>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m6 l4 offset-m3 offset-l4">
+                <h2 class="light">Autocomplete<br></h2>
+            </div>
+        </div>
+
+        <div class="col s12 center">
+            <ul class="tabs">
+                <li class="tab col s6"><a class="active" href="#chipsTab">Chips</a></li>
+                <li class="tab col s6"><a href="#selectTab">Select</a></li>
+            </ul>
+        </div>
+
+        <div class="row">
+            <div class="col s12 m6 l4 offset-m3 offset-l4">
+                <h3 class="light"><br></h3>
+            </div>
+        </div>
+
+        <div id="chipsTab" class="col s12">
+            <div class="row">
+                <div class="col s6 m6 l4 offset-s3 offset-m3 offset-l4">
+                    <div class="chips chips-autocomplete" id="enteredOptions"></div>
+                    <label>Please select your options.</label>
+                </div>
+            </div>
+        </div>
+
+        <div id="selectTab" class="col s12">
+            <div class="row">
+                <div class="input-field col s6 m6 l4 offset-s3 offset-m3 offset-l4">
+                    <select id="optionsSelect">
+                        <option value="" disabled selected>Choose your option</option>
+                    </select>
+                    <label>Please select your option.</label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
