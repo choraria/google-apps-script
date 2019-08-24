@@ -1,4 +1,4 @@
-var ID = '1I3nhVn_YnyfZHjbjKPIkS_k72Qn8IfXt9mpF26k8bUg';
+var ID = 'Enter-Your-SpreadSheetID-Here';
 var ss = SpreadsheetApp.openById(ID);
 var sheetName = 'Sheet1';
 var activeSheet = ss.getSheetByName(sheetName);
