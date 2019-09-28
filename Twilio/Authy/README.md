@@ -1,1 +1,1 @@
-# Connecting Authy with Google Apps Script
+# Connecting Apps Script to [Authy](https://www.twilio.com)
