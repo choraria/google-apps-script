@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <base target="_top">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/authy-form-helpers/2.3/form.authy.min.css" media="screen" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/authy-form-helpers/2.3/form.authy.min.js" type="text/javascript"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.modal');
+            var instances = M.Modal.init(elems);
+        });
+    </script>
+
+    <script>
+        function registerUser(e) {
+            var formData = {
+                email: $("#email").val(),
+                country: $("#countryCode").val(),
+                phoneNumber: $("#phoneNumber").val()
+            };
+            $("#register").attr("disabled", "disabled");
+            google.script.run.withSuccessHandler(function(text) {
+                M.toast({
+                    html: text
+                });
+                if (text == 'Registered Successfully!') {
+                    var instance = M.Modal.getInstance($("#signup"));
+                    if (instance.isOpen) {
+                        instance.close();
+                    }
+                }
+                $("#register").removeAttr("disabled");
+            }).addNewUser(formData);
+        }
+    </script>
+
+    <script>
+        function authenticateUsingPush() {
+            $("#pushAuth").attr("disabled", "disabled");
+            google.script.run.withSuccessHandler(function(value) {
+                M.toast({
+                    html: value
+                });
+                if (value == 'Please check your phone...') {
+                    var instance = M.Modal.getInstance($("#login"));
+                    if (instance.isOpen) {
+                        instance.close();
+                    }
+                    var div = document.getElementById('progress');
+                    div.innerHTML = '<div class="indeterminate"></div>';
+                }
+                $("#pushAuth").removeAttr("disabled");
+
+                if (value == 'Please check your phone...') {
+                    setInterval(function() {
+                        google.script.run.withSuccessHandler(function(status) {
+                            if (status) {
+                                reload();
+                            }
+                        }).loginStatus();
+                    }, 1000);
+                }
+
+            }).pushAuth();
+        }
+
+        function reload() {
+            var linkAddr
+            google.script.run.withSuccessHandler(function(value) {
+                window.open(value, '_top');
+            }).webAppURL(linkAddr);
+        }
+    </script>
+
+    <script>
+        function loginTOTP(e) {
+            var token = document.getElementById("authy-token").value;
+            $("#TOTP").attr("disabled", "disabled");
+            google.script.run.withSuccessHandler(function(text) {
+                M.toast({
+                    html: text
+                });
+                if (text == 'Logging you in!') {
+                    reload();
+                }
+                $("#TOTP").removeAttr("disabled");
+            }).verifyTOTP(token);
+        }
+
+        function reload() {
+            var linkAddr
+            google.script.run.withSuccessHandler(function(value) {
+                window.open(value, '_top');
+            }).webAppURL(linkAddr);
+        }
+    </script>
+
+</head>
+
+<body>
+    <div class="container center">
+        <h1><br /></h1>
+        <h3>Use Authy with Google Apps Script</h3>
+        <h5>Please download the Authy app on your phone to continue</h5>
+        <h4><br /></h4>
+
+        <button data-target="signup" class="waves-effect btn blue modal-trigger btn-large">Sign up</button>
+
+        <div id="signup" class="modal">
+            <div class="modal-content">
+                <div class="row">
+                    <form class="col s6 offset-s3" onsubmit="event.preventDefault(); registerUser()">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="email" type="email" class="validate" required>
+                                <span class="helper-text" align='left'>Email</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s3">
+                                <input id="countryCode" type="number" class="validate" required>
+                                <span class="helper-text" align='left'>Country Code</span>
+                            </div>
+                            <div class="input-field col s9">
+                                <input id="phoneNumber" type="tel" required>
+                                <span class="helper-text" align='left'>Number</span>
+                            </div>
+                        </div>
+                        <button class="waves-effect btn red" type="submit" id="register">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <br />
+        <br />
+
+        <button data-target="login" class="waves-effect btn black modal-trigger btn-large">Log In</button>
+
+        <div id="login" class="modal">
+            <div class="modal-content">
+                <div class="row">
+                    <h3><br /></h3>
+                    <button class="waves-effect btn red" type="submit" id="pushAuth" onclick='event.preventDefault(); authenticateUsingPush()'>Login using Push Notification</button>
+                    <h3><br /></h3>
+                    <h3>OR</h3>
+
+                    <form class="col s6 offset-s3" onsubmit="event.preventDefault(); loginTOTP()">
+                        <div class="row">
+                            <div class="input-field col s6 offset-s3">
+                                <input id="authy-token" name="authy-token" type="text" value="" />
+                                <span class="helper-text" align='left'>Token</span>
+                            </div>
+                        </div>
+                        <button class="waves-effect btn green" type="submit" id="TOTP">Login using TOTP</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <h2><br /></h2>
+
+        <div class="row">
+            <div class="col s6 offset-s3">
+                <div class="progress" id='progress'>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
