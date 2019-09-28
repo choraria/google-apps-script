@@ -1,1 +1,1 @@
-# Connecting Twilio with Google Apps Script
+# Connecting Apps Script to [Twilio](https://twilio.com)
