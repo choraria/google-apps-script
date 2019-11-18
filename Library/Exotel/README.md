@@ -2,7 +2,7 @@
 
 ### Host it yourself
 
-Refer to Google's guide on [creating a library](https://developers.google.com/apps-script/guides/libraries#creating_a_library) and copy-paste the code available in this repository - [ExoAPI.gs](/ExoAPI.gs)
+Refer to Google's guide on [creating a library](https://developers.google.com/apps-script/guides/libraries#creating_a_library) and copy-paste the code available in this repository - [ExoAPI.gs](ExoAPI.gs)
 
 ### List of functions
 
