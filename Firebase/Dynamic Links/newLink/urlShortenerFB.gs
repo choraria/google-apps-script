@@ -1,5 +1,5 @@
 function URLShortener() {
-  var data = {
+  var body = {
     "dynamicLinkInfo": {
       "domainUriPrefix": "https://example.page.link",
       "link": "https://example.com/?utm_source=email&utm_medium=mobile&utm_content=1234567890"
@@ -13,10 +13,9 @@ function URLShortener() {
   var options = {
     'method': 'POST',
     "contentType": "application/json",
-    'payload': JSON.stringify(data),
+    'payload': JSON.stringify(body),
   };
   var response = UrlFetchApp.fetch(url, options);
-  Logger.log(response)
   var json = response.getContentText();
   var data = JSON.parse(json);
   var obj = data["shortLink"];
