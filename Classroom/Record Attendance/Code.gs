@@ -1,7 +1,7 @@
 var courseId = 'XXXXXXXXXXXX'; // https://developers.google.com/classroom/reference/rest/v1/courses/list
 var topicID = 'YYYYYYYYYYY'; // https://developers.google.com/classroom/reference/rest/v1/courses.topics/list
 
-var startDate = new Date(); // new Date(year, month, day)
+var startDate = new Date(); // new Date("dd-MMM-yyyy")
 var scheduleForDays = 5; // Number of days to schedule the attendace from 'startDate'
 
 var scheduledTimeHour = 9; // the number 9 (integer value) for 9 AM
