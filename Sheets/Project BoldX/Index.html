@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<base target="_top">
+	<script>
+	function runBoldX() {
+			var range = document.getElementById("range").value;
+			var words = document.getElementById("words").value;
+		google.script.run.main(range, words);
+	}
+	</script>
+</head>
+
+<body>
+	<form id="BoldX" onsubmit="runBoldX()">
+		<label for="range">Range: </label>
+		<input type="text" id="range" name="range">
+		<br />
+		<br />
+		<label for="words">Words: </label>
+		<input type="text" id="words" name="words">
+		<br />
+		<br />
+		<input type="submit" value="Bold 'em"> </form>
+</body>
+
+</html>
