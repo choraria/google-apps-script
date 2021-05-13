@@ -13,7 +13,10 @@ function showSidebar() {
 const ss = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
 
 function main(range, csvWords) {
-  const values = ss.getRange(range).getValues();
+  range = ss.getRange(range);
+  const rIndex = range.getRow();
+  const cIndex = range.getColumn();
+  const values = range.getValues();
   const rawWords = csvWords.split(",");
   const words = [];
   rawWords.forEach(word => {
@@ -25,8 +28,10 @@ function main(range, csvWords) {
     const row = values[rowIndex];
     for (let colIndex = 0; colIndex < row.length; colIndex++) {
       const value = row[colIndex];
-      if (checkWords(value, words)) {
-        setBoldFormat(value, words, rowIndex, colIndex);
+      if (value != '' && value != null && value != undefined) {
+        if (checkWords(value, words)) {
+          setBoldFormat(value, words, (rowIndex + rIndex), (colIndex + cIndex));
+        }
       }
     }
   }
@@ -39,7 +44,7 @@ function checkWords(value, words) {
 }
 
 function setBoldFormat(value, words, rowIndex, colIndex) {
-  const range = ss.getRange(rowIndex + 1, colIndex + 1);
+  const range = ss.getRange(rowIndex, colIndex);
   const boldX = SpreadsheetApp.newTextStyle().setBold(true).build();
   for (let wordIndex in words) {
     let word = words[wordIndex];
