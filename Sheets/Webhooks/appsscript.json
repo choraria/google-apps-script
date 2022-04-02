@@ -1,5 +1,4 @@
 {
-  "dependencies": {},
   "oauthScopes": [
     "https://www.googleapis.com/auth/spreadsheets.currentonly"
   ],
