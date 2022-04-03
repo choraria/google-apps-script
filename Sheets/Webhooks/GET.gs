@@ -1,3 +1,16 @@
+function onOpen(e) {
+  const ui = SpreadsheetApp.getUi();
+  if (e && e.authMode == ScriptApp.AuthMode.NONE) {
+    ui.createMenu('Webhooks')
+      .addItem('Authorize', 'authorizeScript')
+      .addToUi();
+  }
+}
+
+function authorizeScript() {
+  SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+}
+
 function doGet(e) {
   const lock = LockService.getScriptLock();
   try {
