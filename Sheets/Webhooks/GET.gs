@@ -6,7 +6,7 @@ function onOpen(e) {
 }
 
 function authorizeScript() {
-  SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  SpreadsheetApp.getActiveSpreadsheet().toast('Authorized');
 }
 
 function doGet(e) {
