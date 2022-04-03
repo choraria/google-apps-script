@@ -1,6 +1,6 @@
-function onOpen(e) {
+function onOpen() {
   const ui = SpreadsheetApp.getUi();
-  if (e && e.authMode == ScriptApp.AuthMode.NONE) {
+  if (ScriptApp.getAuthorizationInfo(ScriptApp.AuthMode.FULL).getAuthorizationStatus() == 'REQUIRED') {
     ui.createMenu('Webhooks')
       .addItem('Authorize', 'authorizeScript')
       .addToUi();
