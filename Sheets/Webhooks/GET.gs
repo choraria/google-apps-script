@@ -1,12 +1,17 @@
+const documentProperties = PropertiesService.getDocumentProperties();
+
 function onOpen(e) {
-  const ui = SpreadsheetApp.getUi();
-  ui.createMenu('Webhooks')
-    .addItem('Authorize', 'authorizeScript')
-    .addToUi();
+  if (documentProperties.getProperty('Authorized') !== 'true') {
+    const ui = SpreadsheetApp.getUi();
+    ui.createMenu('Webhooks')
+      .addItem('Authorize', 'authorizeScript')
+      .addToUi();
+  }
 }
 
 function authorizeScript() {
   SpreadsheetApp.getActiveSpreadsheet().toast('Authorized');
+  documentProperties.setProperty('Authorized', 'true');
 }
 
 function doGet(e) {
