@@ -1,6 +1,6 @@
 function onOpen(e) {
   const ui = SpreadsheetApp.getUi();
-  ui.createMenu(e.authMode)
+  ui.createMenu('Webhooks')
     .addItem('Authorize', 'authorizeScript')
     .addToUi();
 }
