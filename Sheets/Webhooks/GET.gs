@@ -1,3 +1,5 @@
+// Source: https://github.com/choraria/google-apps-script/blob/master/Sheets/Webhooks/GET.gs
+
 const documentProperties = PropertiesService.getDocumentProperties();
 
 function onOpen(e) {
