@@ -27,22 +27,36 @@ function doGet(e) {
     }
     return ContentService.createTextOutput(JSON.stringify(response)).setMimeType(ContentService.MimeType.JSON);
   }
-  const params = e.parameter;
-  const keys = Object.keys(params);
+  let params = e.parameters;
+
+  let keys = Object.keys(params);
   let response = {};
 
   if (keys.length > 0) {
-    const ss = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    let headers = ss.getDataRange().offset(0, 0, 1).getValues()[0];
+    const activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    const allSheets = activeSpreadsheet.getSheets();
 
-    if (headers.length == 0 || (headers.length == 1 && headers[0].length == 0)) {
-      ss.appendRow(keys);
-      ss.setFrozenRows(1);
-      headers = keys;
-    }
+    const activeSheetsAndNewParams = gidHandler(params, activeSpreadsheet, allSheets);
+    const activeSheets = activeSheetsAndNewParams.activeSheetNames;
+    params = activeSheetsAndNewParams.revisedParameters;
+    keys = Object.keys(params);
 
-    const rowData = [params].map(row => headers.map(key => row[String(key)] || ''));
-    ss.getRange(ss.getLastRow() + 1, 1, rowData.length, rowData[0].length).setValues(rowData);
+    const cartesianData = cartesian(params);
+
+    activeSheets.forEach(activeSheetName => {
+      let activeSheet = activeSpreadsheet.getSheetByName(activeSheetName);
+      let headers = activeSheet.getDataRange().offset(0, 0, 1).getValues()[0];
+      if (headers.length == 0 || (headers.length == 1 && headers[0].length == 0)) {
+        activeSheet.appendRow(keys);
+        activeSheet.setFrozenRows(1);
+        headers = keys;
+      }
+
+      let rowData = []
+      cartesianData.forEach(rowLevelData => [rowLevelData].map(row => rowData.push(headers.map(key => row[String(key)] || ''))));
+
+      activeSheet.getRange(activeSheet.getLastRow() + 1, 1, rowData.length, rowData[0].length).setValues(rowData);
+    })
 
     response = {
       status: 'success',
@@ -58,4 +72,96 @@ function doGet(e) {
     lock.releaseLock();
     return ContentService.createTextOutput(JSON.stringify(response)).setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+function gidHandler(params, activeSpreadsheet, allSheets) {
+  let existingSheetIds = [];
+  let getDefaultSheet;
+  let newParameters = {};
+  allSheets.forEach(sheet => existingSheetIds.push(sheet.getSheetId().toString()));
+
+  let defaultWebhookGetSheetId = documentProperties.getProperty('defaultWebhookGetSheetId');
+  let newDefaultWebhookGetSheetName = `[GET] Webhook — ${new Date().getTime().toString()}`;
+
+  let checkDefaultOrCreateNewGetSheet = false;
+
+  let keys = Object.keys(params);
+  if (keys.includes('gid')) {
+    const gidValues = params['gid'];
+    const matchingGids = existingSheetIds.filter(sheetId => gidValues.includes(sheetId));
+    const nonMatchingGids = gidValues.filter(gid => !matchingGids.includes(gid));
+    if (matchingGids.length === 0) {
+      checkDefaultOrCreateNewGetSheet = true;
+    } else {
+      newParameters = params;
+      delete newParameters["gid"];
+      if (nonMatchingGids.length > 0) {
+        newParameters["gid"] = nonMatchingGids;
+      }
+      if (matchingGids.length === 1) {
+        getDefaultSheet = allSheets.filter(sheet => sheet.getSheetId() == matchingGids[0]);
+        return {
+          activeSheetNames: [getDefaultSheet[0].getSheetName()],
+          revisedParameters: newParameters,
+        };
+      } else {
+        let validSheetNames = [];
+        matchingGids.forEach(gid => {
+          getDefaultSheet = allSheets.filter(sheet => sheet.getSheetId() == gid);
+          if (getDefaultSheet.length !== 0) {
+            validSheetNames.push(getDefaultSheet[0].getSheetName())
+          }
+        });
+        return {
+          activeSheetNames: validSheetNames,
+          revisedParameters: newParameters,
+        }
+      }
+    }
+  } else {
+    checkDefaultOrCreateNewGetSheet = true;
+  }
+
+  if (checkDefaultOrCreateNewGetSheet) {
+    if (!defaultWebhookGetSheetId) {
+      defaultWebhookGetSheetId = activeSpreadsheet.insertSheet().setName(newDefaultWebhookGetSheetName).getSheetId().toString();
+      documentProperties.setProperty('defaultWebhookGetSheetId', defaultWebhookGetSheetId);
+      return {
+        activeSheetNames: [newDefaultWebhookGetSheetName],
+        revisedParameters: params,
+      };
+    } else {
+      getDefaultSheet = allSheets.filter(sheet => sheet.getSheetId() == defaultWebhookGetSheetId);
+      if (getDefaultSheet.length !== 0) {
+        return {
+          activeSheetNames: [getDefaultSheet[0].getSheetName()],
+          revisedParameters: params,
+        };
+      } else {
+        defaultWebhookGetSheetId = activeSpreadsheet.insertSheet().setName(newDefaultWebhookGetSheetName).getSheetId().toString();
+        documentProperties.setProperty('defaultWebhookGetSheetId', defaultWebhookGetSheetId);
+        return {
+          activeSheetNames: [newDefaultWebhookGetSheetName],
+          revisedParameters: params,
+        };
+      }
+    }
+  }
+}
+
+function cartesian(parameters) {
+  let keys = Object.keys(parameters);
+  let depth = Object.values(parameters).reduce((product, { length }) => product * length, 1);
+  let result = [];
+  for (let i = 0; i < depth; i++) {
+    let j = i;
+    let dict = {};
+    for (let key of keys) {
+      let size = parameters[key].length;
+      dict[key] = parameters[key][j % size];
+      j = Math.floor(j / size);
+    }
+    result.push(dict);
+  }
+  return result;
 }
