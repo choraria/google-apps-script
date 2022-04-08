@@ -29,18 +29,17 @@ function doGet(e) {
   }
   let params = e.parameters;
 
+  const activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const allSheets = activeSpreadsheet.getSheets();
+
+  const activeSheetsAndNewParams = gidHandler(params, activeSpreadsheet, allSheets);
+  const activeSheets = activeSheetsAndNewParams.activeSheetNames;
+  params = activeSheetsAndNewParams.revisedParameters;
+
   let keys = Object.keys(params);
   let response = {};
 
   if (keys.length > 0) {
-    const activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    const allSheets = activeSpreadsheet.getSheets();
-
-    const activeSheetsAndNewParams = gidHandler(params, activeSpreadsheet, allSheets);
-    const activeSheets = activeSheetsAndNewParams.activeSheetNames;
-    params = activeSheetsAndNewParams.revisedParameters;
-    keys = Object.keys(params);
-
     const cartesianData = cartesian(params);
 
     activeSheets.forEach(activeSheetName => {
