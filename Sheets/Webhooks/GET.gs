@@ -27,12 +27,13 @@ function doGet(e) {
     }
     return ContentService.createTextOutput(JSON.stringify(response)).setMimeType(ContentService.MimeType.JSON);
   }
+  
   let params = e.parameters;
 
   const activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const allSheets = activeSpreadsheet.getSheets();
 
-  const activeSheetsAndNewParams = gidHandler(params, activeSpreadsheet, allSheets);
+  const activeSheetsAndNewParams = gidHandlerForGet(params, activeSpreadsheet, allSheets);
   const activeSheets = activeSheetsAndNewParams.activeSheetNames;
   params = activeSheetsAndNewParams.revisedParameters;
 
@@ -73,7 +74,7 @@ function doGet(e) {
   }
 }
 
-function gidHandler(params, activeSpreadsheet, allSheets) {
+function gidHandlerForGet(params, activeSpreadsheet, allSheets) {
   let existingSheetIds = [];
   let getDefaultSheet;
   let newParameters = {};
