@@ -11,6 +11,7 @@ function doPost(e) {
     }
     return ContentService.createTextOutput(JSON.stringify(response)).setMimeType(ContentService.MimeType.JSON);
   }
+  
   let { parameters, postData: { contents, type } = {} } = e;
   let response = {};
 
@@ -33,8 +34,19 @@ function doPost(e) {
   let keys = [];
 
   if (type === 'application/json') {
-    let jsonData = flatten(JSON.parse(contents));
-    keys = Object.keys(jsonData);
+    let jsonData;
+    try {
+      jsonData = JSON.parse(contents);
+    } catch (e) {
+      response = {
+        status: 'error',
+        message: 'Invalid JSON format'
+      };
+      return ContentService.createTextOutput(JSON.stringify(response)).setMimeType(ContentService.MimeType.JSON);
+    };
+
+    jsonData = Array.isArray(jsonData) ? jsonData.map(data => flatten(data)) : [flatten(jsonData)];
+    keys = Array.isArray(jsonData) ? Object.keys(jsonData[0]) : Object.keys(jsonData);
     if (keys.length > 0) {
       activeSheets.forEach(activeSheetName => {
         let activeSheet = activeSpreadsheet.getSheetByName(activeSheetName);
@@ -45,7 +57,6 @@ function doPost(e) {
           headers = keys;
         }
         let rowData = []
-        jsonData = Array.isArray(jsonData) ? jsonData : [jsonData];
         jsonData.forEach(rowLevelData => [rowLevelData].map(row => rowData.push(headers.map(key => row[String(key)] || ''))));
 
         activeSheet.getRange(activeSheet.getLastRow() + 1, 1, rowData.length, rowData[0].length).setValues(rowData);
