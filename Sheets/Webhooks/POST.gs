@@ -46,7 +46,7 @@ function doPost(e) {
     };
 
     jsonData = Array.isArray(jsonData) ? jsonData.map(data => flatten(data)) : [flatten(jsonData)];
-    keys = Array.isArray(jsonData) ? Object.keys(jsonData[0]) : Object.keys(jsonData);
+    keys = Array.isArray(jsonData) ? ((jsonData[0].constructor === Object || jsonData[0].constructor === Array) ? Object.keys(jsonData[0]) : jsonData[0]) : Object.keys(jsonData);
     if (keys.length > 0) {
       activeSheets.forEach(activeSheetName => {
         let activeSheet = activeSpreadsheet.getSheetByName(activeSheetName);
