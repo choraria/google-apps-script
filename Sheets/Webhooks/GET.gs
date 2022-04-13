@@ -12,7 +12,7 @@ function onOpen(e) {
 }
 
 function authorizeScript() {
-  SpreadsheetApp.getActiveSpreadsheet().toast('Authorized');
+  SpreadsheetApp.getActiveSpreadsheet().toast('Authorization successful.',"🪝 Webhooks for Sheets");
   documentProperties.setProperty('Authorized', 'true');
 }
 
