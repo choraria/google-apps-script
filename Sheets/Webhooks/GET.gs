@@ -1,6 +1,7 @@
 // Source: https://github.com/choraria/google-apps-script/blob/master/Sheets/Webhooks/GET.gs
 
 const documentProperties = PropertiesService.getDocumentProperties();
+let ok200Status = '%200OKSTATUS%'; // replace '%200OKSTATUS%' from the add-on to either `true` or `false` (boolean)
 
 function onOpen(e) {
   if (documentProperties.getProperty('Authorized') !== 'true') {
@@ -12,7 +13,7 @@ function onOpen(e) {
 }
 
 function authorizeScript() {
-  SpreadsheetApp.getActiveSpreadsheet().toast('Authorization successful.',"🪝 Webhooks for Sheets");
+  SpreadsheetApp.getActiveSpreadsheet().toast('Authorization successful.', "🪝 Webhooks for Sheets");
   documentProperties.setProperty('Authorized', 'true');
 }
 
@@ -27,7 +28,7 @@ function doGet(e) {
     }
     return ContentService.createTextOutput(JSON.stringify(response)).setMimeType(ContentService.MimeType.JSON);
   }
-  
+
   let params = e.parameters;
 
   const activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
@@ -63,7 +64,9 @@ function doGet(e) {
       message: 'Data logged successfully'
     }
     lock.releaseLock();
-    return ContentService.createTextOutput(JSON.stringify(response)).setMimeType(ContentService.MimeType.JSON);
+    return ok200Status === true ?
+      HtmlService.createHtmlOutput('Data logged successfully').setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL) :
+      ContentService.createTextOutput(JSON.stringify(response)).setMimeType(ContentService.MimeType.JSON);
   } else {
     response = {
       status: 'success',
