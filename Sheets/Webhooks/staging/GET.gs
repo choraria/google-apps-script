@@ -43,7 +43,7 @@ function doGet(e) {
   let response = {};
 
   if (keys.length > 0) {
-    logTimeStamp === true ? params["timestamp_incoming_webhook"] = [new Date()] : null;    
+    logTimeStamp === true ? params["timestamp_incoming_webhook"] = [new Date()] : null;
     const cartesianData = cartesian(params);
 
     activeSheets.forEach(activeSheetName => {
