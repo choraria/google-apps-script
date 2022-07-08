@@ -2,7 +2,7 @@
 
 const documentProperties = PropertiesService.getDocumentProperties();
 let ok200Status = '%200OKSTATUS%'; // replace '%200OKSTATUS%' from the add-on to either `true` or `false` (boolean)
-let logTimeStamp = true; // replace '%LOGTIMESTAMP%' from the add-on to either `true` or `false` (boolean)
+let logTimeStamp = '%LOGTIMESTAMP%'; // replace '%LOGTIMESTAMP%' from the add-on to either `true` or `false` (boolean)
 
 function onOpen(e) {
   if (documentProperties.getProperty('Authorized') !== 'true') {
