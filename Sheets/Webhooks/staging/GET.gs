@@ -2,7 +2,7 @@
 
 const documentProperties = PropertiesService.getDocumentProperties();
 let ok200Status = '%200OKSTATUS%'; // replace '%200OKSTATUS%' from the add-on to either `true` or `false` (boolean)
-let logTimeStamp = '%LOGTIMESTAMP%'; // replace '%LOGTIMESTAMP%' from the add-on to either `true` or `false` (boolean)
+let logTimeStamp = true; // replace '%LOGTIMESTAMP%' from the add-on to either `true` or `false` (boolean)
 
 function onOpen(e) {
   if (documentProperties.getProperty('Authorized') !== 'true') {
@@ -44,6 +44,7 @@ function doGet(e) {
 
   if (keys.length > 0) {
     logTimeStamp === true ? params["timestamp_incoming_webhook"] = [new Date()] : null;
+    keys = Object.keys(params);
     const cartesianData = cartesian(params);
 
     activeSheets.forEach(activeSheetName => {
