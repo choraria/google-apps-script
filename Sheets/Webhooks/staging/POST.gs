@@ -92,6 +92,7 @@ function doPost(e) {
       keys = Object.keys(parameters);
       if (keys.length > 0) {
         logTimeStamp === true ? parameters["timestamp_incoming_webhook"] = [new Date()] : null;
+        keys = Object.keys(parameters);
         const cartesianData = cartesian(parameters);
         activeSheets.forEach(activeSheetName => {
           let activeSheet = activeSpreadsheet.getSheetByName(activeSheetName);
