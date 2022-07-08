@@ -54,10 +54,20 @@ function doPost(e) {
         if (headers.length == 0 || (headers.length == 1 && headers[0].length == 0)) {
           activeSheet.appendRow(keys);
           activeSheet.setFrozenRows(1);
-          headers = keys;
+          if (logTimeStamp === true) {
+            activeSheet.insertColumnBefore(1);
+            SpreadsheetApp.flush();
+            activeSheet.getRange("A1").setValue("timestamp_incoming_webhook");
+            activeSheet.getRange("A:A").setNumberFormat('dd/MM/yyyy HH:mm:ss');
+            SpreadsheetApp.flush();
+            headers = activeSheet.getDataRange().offset(0, 0, 1).getValues()[0];
+          } else {
+            headers = keys;
+          }
         }
-        let rowData = []
-        jsonData.forEach(rowLevelData => [rowLevelData].map(row => rowData.push(headers.map(key => row[String(key)] || ''))));
+        let rowData = [];
+        const now = new Date();
+        jsonData.forEach(rowLevelData => [rowLevelData].map(row => rowData.push(headers.map(key => key === "timestamp_incoming_webhook" ? now : row[String(key)] || ''))));
 
         activeSheet.getRange(activeSheet.getLastRow() + 1, 1, rowData.length, rowData[0].length).setValues(rowData);
       });
@@ -81,6 +91,8 @@ function doPost(e) {
     if (parameters) {
       keys = Object.keys(parameters);
       if (keys.length > 0) {
+        logTimeStamp === true ? parameters["timestamp_incoming_webhook"] = [new Date()] : null;
+        keys = Object.keys(parameters);
         const cartesianData = cartesian(parameters);
         activeSheets.forEach(activeSheetName => {
           let activeSheet = activeSpreadsheet.getSheetByName(activeSheetName);
@@ -88,9 +100,16 @@ function doPost(e) {
           if (headers.length == 0 || (headers.length == 1 && headers[0].length == 0)) {
             activeSheet.appendRow(keys);
             activeSheet.setFrozenRows(1);
-            headers = keys;
+            if (logTimeStamp === true) {
+              activeSheet.moveColumns(activeSheet.getRange(1, keys.indexOf("timestamp_incoming_webhook") + 1), 1);
+              SpreadsheetApp.flush();
+              activeSheet.getRange("A:A").setNumberFormat('dd/MM/yyyy HH:mm:ss');
+              headers = activeSheet.getDataRange().offset(0, 0, 1).getValues()[0];
+            } else {
+              headers = keys;
+            }
           }
-          let rowData = []
+          let rowData = [];
           cartesianData.forEach(rowLevelData => [rowLevelData].map(row => rowData.push(headers.map(key => row[String(key)] || ''))));
 
           activeSheet.getRange(activeSheet.getLastRow() + 1, 1, rowData.length, rowData[0].length).setValues(rowData);
