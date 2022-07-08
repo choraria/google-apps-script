@@ -31,7 +31,6 @@ function doGet(e) {
   }
 
   let params = e.parameters;
-  logTimeStamp === true ? params["timestamp_incoming_webhook"] = [new Date()] : null;
 
   const activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   const allSheets = activeSpreadsheet.getSheets();
@@ -44,6 +43,7 @@ function doGet(e) {
   let response = {};
 
   if (keys.length > 0) {
+    logTimeStamp === true ? params["timestamp_incoming_webhook"] = [new Date()] : null;    
     const cartesianData = cartesian(params);
 
     activeSheets.forEach(activeSheetName => {
