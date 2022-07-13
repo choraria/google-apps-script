@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "libraries": [
+      {
+        "userSymbol": "OAuth2",
+        "version": "41",
+        "libraryId": "1B7FSrk5Zi6L1rSxxTDgDEUsPzlukDsi4KGuTMorsTQHhGBzBkMun4iDF"
+      }
+    ]
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
+  "chat": {
+    "addToSpaceFallbackMessage": "Thanks for adding me this space!\n\n➡️ Next, connect your Twitter account by running the */twitter_connect* slash command.\nAnyone who wants to either *like* a tweet or *follow* another user will need to authorize their own Twitter account, which can be done either by running */twitter_connect* or DMing the bot directly.\n\n⚠️ Notes on connecting and authorization:\nYou will need to click on that *Configure* button *twice* during the auth process!\n— First would prepare your Google account to store your Twitter credentials — this way, no one else can access them\n\t— Needs to be done only once, unless you manually revoke the apps' permissions\n— And the second, would then allow you to connect & interact with your Twitter account"
+  },
+  "oauthScopes": [
+    "https://www.googleapis.com/auth/script.external_request"
+  ]
+}
