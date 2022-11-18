@@ -33,7 +33,7 @@ function doPost(e) {
 
   let keys = [];
 
-  if (type === 'application/json') {
+  if (type === 'application/json' || (type === '' && contents.length > 0)) {
     let jsonData;
     try {
       jsonData = JSON.parse(contents);
