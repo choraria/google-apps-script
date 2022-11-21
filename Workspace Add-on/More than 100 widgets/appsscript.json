@@ -1,0 +1,34 @@
+{
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
+  "addOns": {
+    "common": {
+      "name": "More than 100",
+      "logoUrl": "https://script.gs/content/images/2022/11/custom-functions-logo.jpeg",
+      "layoutProperties": {
+        "primaryColor": "#ffb300",
+        "secondaryColor": "#f57c00"
+      },
+      "homepageTrigger": {
+        "enabled": true,
+        "runFunction": "sheetsHome"
+      },
+      "openLinkUrlPrefixes": [
+        "https://twitter.com/",
+        "https://script.gs/",
+        "https://workspace.google.com/marketplace/app/"
+      ],
+      "universalActions": [
+        {
+          "label": "Privacy",
+          "openLink": "https://script.gs/privacy"
+        },
+        {
+          "label": "Terms",
+          "openLink": "https://script.gs/terms/"
+        }
+      ]
+    },
+    "sheets": {}
+  }
+}
