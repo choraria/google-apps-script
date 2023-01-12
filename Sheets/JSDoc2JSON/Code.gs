@@ -79,7 +79,6 @@ function jsDoc2JSON(input) {
 
 // https://jsdoc.app/tags-returns.html
 
-
 // ^\@(returns)(?: )\{(.*)\}(?:(?= )(?: )(?:\- )?(.*)|(?! )$)
 // 	@returns {number}
 // 	@returns {number} Sum of a and b
