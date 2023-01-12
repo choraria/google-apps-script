@@ -78,7 +78,7 @@ function jsDoc2JSON(input) {
 // https://jsdoc.app/tags-returns.html
 
 // ^\@(returns)(?: )\{(.*)\}(?:(?= )(?: )(?:\- )?(.*)|(?! )$)
-// 	@returns {number}
-// 	@returns {number} Sum of a and b
-// 	@returns {(number|Array)} Sum of a and b or an array that contains a, b and the sum of a and b.
-// 	@returns {Promise} Promise object represents the sum of a and b
+//   @returns {number}
+// 	 @returns {number} Sum of a and b
+// 	 @returns {(number|Array)} Sum of a and b or an array that contains a, b and the sum of a and b.
+// 	 @returns {Promise} Promise object represents the sum of a and b
